@@ -3,8 +3,6 @@ import { client } from "../../dataBase"
 
 const activeUserService = async (userId: number) => {
 
-    
-
     const queryString: string = `
     UPDATE
         users

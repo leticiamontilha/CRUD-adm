@@ -3,16 +3,16 @@ import { createUsersController, listUserController, deleteUserControler, listUse
 import userExist from "../middlewares/userExist.middleware"
 import { createUserSchema, editUserSchema} from "../schemas/users.schemas"
 import ensureDataValidateMiddleware from "../middlewares/ensureDataValidate.middlewares"
-import { ensureTokeIsValidMiddleware } from "../middlewares/ensureTokenIsValid.middlewares"
+import { ensureTokeIsValidMiddleware, verifyUserPermission } from "../middlewares/validTokenAndUserPermission.middlewares"
 
 const userRoutes: Router = Router()
 
 userRoutes.post('', ensureDataValidateMiddleware(createUserSchema), createUsersController)
-userRoutes.get('', ensureTokeIsValidMiddleware, listUserController)
+userRoutes.get('', ensureTokeIsValidMiddleware, verifyUserPermission, listUserController)
 userRoutes.get('/profile', ensureTokeIsValidMiddleware, listUserProfile)
-userRoutes.patch('/:id', userExist, ensureTokeIsValidMiddleware, ensureDataValidateMiddleware(editUserSchema), editUserControler) 
+userRoutes.patch('/:id', userExist, ensureTokeIsValidMiddleware, verifyUserPermission, ensureDataValidateMiddleware(editUserSchema), editUserControler) 
 userRoutes.delete('/:id', userExist, ensureTokeIsValidMiddleware, deleteUserControler)
-userRoutes.put('/:id/recover', activeUserControler) 
+userRoutes.put('/:id/recover', userExist, ensureTokeIsValidMiddleware, verifyUserPermission, activeUserControler) 
 
 export {
     userRoutes

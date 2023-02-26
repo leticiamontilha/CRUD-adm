@@ -28,7 +28,20 @@ const ensureTokeIsValidMiddleware = async (request: Request, response: Response,
 }
 
 
+const verifyUserPermission = async (request: Request, response: Response, next: NextFunction): Promise<Response | void> => {
+    const authorizationAdmin = request.user.admin
+
+    if(authorizationAdmin === false){
+        throw new AppError("O usuario não tem permissão", 403)
+    }
+
+    return next()
+
+}
+
+
 
 export {
+    verifyUserPermission,
     ensureTokeIsValidMiddleware
 }

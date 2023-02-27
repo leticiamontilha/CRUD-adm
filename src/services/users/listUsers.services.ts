@@ -1,5 +1,6 @@
-import {IUserResult, IAllUsersReturn} from "../../interfaces/users.interfaces"
+import {IAllUsersReturn, IUserResult} from "../../interfaces/users.interfaces"
 import { client } from "../../dataBase"
+import { allUserSchemas } from "../../schemas/users.schemas"
 // import { AppError } from "../../errors"
 
 
@@ -15,7 +16,7 @@ const listUserService = async (): Promise<IAllUsersReturn> => {
 
     const queryResult: IUserResult = await client.query(queryString)
 
-    return queryResult.rows
+    return allUserSchemas.parse(queryResult.rows)
 }
 
 export default listUserService
